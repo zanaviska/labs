@@ -38,7 +38,7 @@ class List
             }
             else
             {
-                a->prev = a;
+                a->prev = last;
                 a->name = s;
                 a->next = a;
                 last->next = a;
