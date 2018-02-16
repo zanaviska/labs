@@ -31,7 +31,6 @@ class List
             Node* a = new Node();
             if(first == NULL)
             {
-                cerr << '!';
                 a->prev = a;
                 a->name = s;
                 a->next = a;
@@ -46,13 +45,12 @@ class List
             }
             last = a;
         }
-        print()
+        print() // print al members of List from first to last;
         {
             cout << '\n';
             Node* now = first;
             while(now != now->next)
             {
-            cerr << '#';
                 cout << now->name << '\n';
                 now = now->next;
             }
@@ -60,7 +58,7 @@ class List
         }
 };
 
-void Lmerge(List &a, List &b)
+void Lmerge(List &a, List &b)// merge two List in one
 {
     a.last->next = b.first;
     a.last = b.last;
@@ -75,14 +73,25 @@ int main()
     #else
         files("");
     #endif // ANDRII
+    int n, m;//n - size of first List, m - size of second List
+    cin >> n >> m;
     List a = List();
-    a.push("first");
-    a.print();
-    a.push("second");
-    a.print();
     List b = List();
-    b.push("third");
-    b.push("fourth");
+    for(int i = 0; i < n; i++)
+    {
+        string s;
+        cin >> s;
+        a.push(s);
+    }
+    a.print();
+    for(int i = 0; i < m; i++)
+    {
+        string s;
+        cin >> s;
+        b.push(s);
+    }
+    b.print();
     Lmerge(a, b);
+    cout << "Merged:\n";
     a.print();
 }
