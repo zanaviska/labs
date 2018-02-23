@@ -1,0 +1,16 @@
+Test's format:
+
+INPUT:
+
+first line contains 2 numbers: n, m. n is size of the first list and m is size of the second list
+next n lines contains information about all members of the first list
+next m lines contains information about all members of the second list
+
+OUTPUT:
+
+first line is empty
+next n lines contains information about all members of the first list
+next line is empty
+next m lines contains information about all members of the second list
+next line is "Merged:"
+next n+m lines contains information about list that is union list a and list b in way firstly all members from a then all members from b
