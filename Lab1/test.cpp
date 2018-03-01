@@ -1,5 +1,5 @@
-#define CATCH_CONFIG_MAIN  // This tells Catch to provide a main() - only do this in one cpp file
-#include "catch.hpp"
+#define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN  // This tells Catch to provide a main() - only do this in one cpp file
+#include "doctest.h"
 #include <bits/stdc++.h>
 #include "double_linked.h"
 
@@ -26,7 +26,7 @@ TEST_CASE("Accessing empty object's values")
 
 TEST_CASE("pushing element")
 {
-    List a;
+    List a;//created List with which we will work in function
     REQUIRE_NOTHROW(a.push_back(-1));
     for(int i = 0; i < 5; i++)
         a.push_back(i);
@@ -34,7 +34,7 @@ TEST_CASE("pushing element")
     for(int i = -1; i < 5; i++, it = it->next)
         CHECK(it->data == i);
 
-    List b;
+    List b;//created List with which we will work in function
     REQUIRE_NOTHROW(b.push_front(-1));
     for(int i = 0; i < 5; i++)
         b.push_front(i);
@@ -45,7 +45,7 @@ TEST_CASE("pushing element")
 
 TEST_CASE("inserting element")
 {
-    List a;
+    List a;//created List with which we will work in function
     for(int i = 0; i < 10; i++)
         a.push_back(i);
     a.insert(3, 20);
@@ -60,12 +60,21 @@ TEST_CASE("inserting element")
 
 TEST_CASE("deleting element")
 {
+    List a;//created List with which we will work in function
+    for(int i = 0; i < 10; i++)
+        a.push_back(i);
+    CHECK_NOTHROW(a.erase(5));
 
+    auto now = a.begin();
+    for(int i = 0; i < 5; i++, now = now->next)
+        CHECK(now->data == i);
+    for(int i = 6; i < 10; i++, now = now->next)
+        CHECK(now->data == i);
 }
 
 TEST_CASE("Merging empty and non-empty Lists")
 {
-    List a;
+    List a;//created List with which we will work in function
     List b;
     for(int i = 0; i < 10; i++)
         a.push_back(i);
@@ -88,7 +97,7 @@ TEST_CASE("Merging empty and non-empty Lists")
 
 TEST_CASE("Merging empty Lists")
 {
-    List a;
+    List a;//created List with which we will work in function
     List b;//created 2 any List
     List unity = merge(a, b);
     CHECK(unity.size() == 0);
@@ -134,13 +143,13 @@ TEST_CASE("Random")
 	times = 10;
 	int mer = 5;
 
-	for ( int i = 0 ; i < times; i++)
+	for (int i = 0 ; i < times; i++)
 	{
        REQUIRE_NOTHROW(list1.push_back(i));
        REQUIRE_NOTHROW(list2.push_back(i));
 	}
 
-    for ( int i = 0 ; i < del; i++)
+    for (int i = 0 ; i < del; i++)
 	{
 		REQUIRE_NOTHROW(list1 = merge(list2, list1));
 	}
