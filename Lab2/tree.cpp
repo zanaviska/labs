@@ -14,7 +14,7 @@ void Tree::push(int key, int value)
 
 int Tree::find_min(int now)
 {
-    if(!arr[now].is_used) return 10000;
+    if(arr[now].is_used == 0) return 10000;
     int ans = arr[now].value;
     ans = min(ans, find_min(now<<1));
     ans = min(ans, find_min((now<<1)+1));
@@ -23,7 +23,7 @@ int Tree::find_min(int now)
 
 int Tree::find_max(int now)
 {
-    if(!arr[now].is_used) return -10000;
+    if(arr[now].is_used == 0) return -10000;
     int ans = arr[now].value;
     ans = max(ans, find_max(now<<1));
     ans = max(ans, find_max((now<<1)+1));
@@ -32,8 +32,20 @@ int Tree::find_max(int now)
 
 void Tree::get_all_values(vector<int>&vec, int now)
 {
-    if(!arr[now].is_used) return;
+    if(arr[now].is_used == 0) return;
     get_all_values(vec, now<<1);
     vec.push_back(arr[now].value);
     get_all_values(vec, (now<<1)+1);
+}
+
+void Tree::get_all_leave(vector<int>&vec, int now)
+{
+    if(arr[now].is_used == 0) return;
+    if(arr[now<<1].is_used == 0 && arr[(now<<1)+1].is_used == 0)
+    {
+        vac.push_back(arr[now].value);
+        return;
+    }
+    get_all_leave(vec, now<<1);
+    get_all_leave(vec, (now<<1)+1);
 }
