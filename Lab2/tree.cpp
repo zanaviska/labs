@@ -30,10 +30,10 @@ int Tree::find_max(int now)
     return ans;
 }
 
-void Tree::print(int now)
+void Tree::get_all_values(vector<int>&vec, int now)
 {
     if(!arr[now].is_used) return;
-    print(now<<1);
-    cout << arr[now].value << ' ';
-    print((now<<1)+1);
+    get_all_values(vec, now<<1);
+    vec.push_back(arr[now].value);
+    get_all_values(vec, (now<<1)+1);
 }
