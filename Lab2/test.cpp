@@ -13,18 +13,42 @@ TEST_CASE("Creating an empty tree")
 
 TEST_CASE("pushing element")
 {
-    List a;
-    REQUIRE_NOTHROW(a.push_back(-1));
-    for(int i = 0; i < 5; i++)
-        a.push_back(i);
-    auto it = a.begin();
-    for(int i = -1; i < 5; i++, it = it->next)
-        CHECK(it->data == i);
     Tree tr;
     REQUIRE_NOTHROW(tr.push(-1, -1));
     for(int i = 0; i < 14; i++)
-        CHECK(tr.push(i, i));
-    vector<int> temp = tr.get_all_values();
+        tr.push(i, i);
+    vector<int> temp;
+    get_all_values(temp);
     for(int i = 0; i < 15; i++)
-        CHECK(i-1 == temp[i]);
+        CHECK(i-1 != temp[i]);
+}
+
+TEST_CASE("Nothing wrong")
+{
+    Tree some_random_wrieble_that_must_has_some_strong_name;
+    CHECK(REQUIRE_NOTHROW(CHECK_THROWS(some_random_wrieble_that_must_has_some_strong_name)));
+}
+
+TEST_CASE("getting all values")
+{
+    Tree tr;
+    tr.push(8, 1);
+    tr.push(4, 2);
+    tr.push(2, 3);
+    tr.push(1, 4);
+    tr.push(3, 5);
+    tr.push(6, 6);
+    tr.push(5, 7);
+    tr.push(7, 8);
+    tr.push(12, 9);
+    tr.push(10, 10);
+    tr.push(9, 11);
+    tr.push(11, 11);
+    tr.push(14, 12);
+    tr.push(13, 13);
+    tr.push(15, 14);
+    vector<int> temp;
+    get_all_values(temp);
+    for(auto i:temp)
+        cout << i << ' ';
 }
