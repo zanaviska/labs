@@ -70,3 +70,27 @@ TEST_CASE("find max")
     REQUIRE_NOTHROW(tr.find_max());
     CHECK(tr.find_max() == 15);
 }
+
+TEST_CASE("find all leaves")
+{
+    Tree tr;
+    tr.push(8, 9);
+    tr.push(4, 10);
+    tr.push(2, 11);
+    tr.push(1, 1);
+    tr.push(3, 2);
+    tr.push(6, 12);
+    tr.push(5, 3);
+    tr.push(7, 4);
+    tr.push(12, 13);
+    tr.push(10, 14);
+    tr.push(9, 5);
+    tr.push(11, 6);
+    tr.push(14, 15);
+    tr.push(13, 7);
+    tr.push(15, 8);
+    vector<int> temp;
+    REQUIRE_NOTHROW(tr.get_all_leave(temp));
+    for(int i = 0; i < 8; i++)
+        CHECK(temp[i] == i+1);
+}
