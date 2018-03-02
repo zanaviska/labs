@@ -25,8 +25,8 @@ int Tree::find_max(int now)
 {
     if(!arr[now].is_used) return -10000;
     int ans = arr[now].value;
-    ans = max(ans, find_min(now<<1));
-    ans = max(ans, find_min((now<<1)+1));
+    ans = max(ans, find_max(now<<1));
+    ans = max(ans, find_max((now<<1)+1));
     return ans;
 }
 
