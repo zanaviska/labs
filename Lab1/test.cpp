@@ -1,157 +1,104 @@
 #define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN  // This tells Catch to provide a main() - only do this in one cpp file
 #include "doctest.h"
 #include <bits/stdc++.h>
-#include "double_linked.h"
+#include "tree.h"
 
 using namespace std;
 
-List list1;
-List list2;
-
-int f, s, t, amount, times, del;
-
-TEST_CASE("Creating an empty list")
+TEST_CASE("Creating an empty tree")
 {
-	CHECK(list1.size() == 0);
-	CHECK(list2.size() == 0);
-}
-
-TEST_CASE("Accessing empty object's values")
-{
-	CHECK(list1.end() == nullptr);
-	CHECK(list2.end() == nullptr);
-	CHECK(list1.begin() == nullptr);
-	CHECK(list2.begin() == nullptr);
+    Tree tr;
+	CHECK(tr.size() == 0);
 }
 
 TEST_CASE("pushing element")
 {
-    List a;//created List with which we will work in function
-    REQUIRE_NOTHROW(a.push_back(-1));
-    for(int i = 0; i < 5; i++)
-        a.push_back(i);
-    auto it = a.begin();
-    for(int i = -1; i < 5; i++, it = it->next)
-        CHECK(it->data == i);
-
-    List b;//created List with which we will work in function
-    REQUIRE_NOTHROW(b.push_front(-1));
-    for(int i = 0; i < 5; i++)
-        b.push_front(i);
-    it = b.begin();
-    for(int i = -1; i < 5; i++, it = it->next)
-        CHECK(it->data == 3-i);
+    Tree tr;
+    REQUIRE_NOTHROW(tr.push(-1, -1));
+    for(int i = 0; i < 14; i++)
+        tr.push(i, i);
+    vector<int> temp;
+    tr.get_all_values(temp);
+    for(int i = 0; i < 15; i++)
+        CHECK(i-1 == temp[i]);
 }
 
-TEST_CASE("inserting element")
+TEST_CASE("Nothing wrong")
 {
-    List a;//created List with which we will work in function
-    for(int i = 0; i < 10; i++)
-        a.push_back(i);
-    a.insert(3, 20);
-    auto now = a.begin();
-    for(int i = 0; i < 3; i++, now = now->next)
-        CHECK(now->data == i);
-    CHECK(now->data == 20);
-    now = now->next;
-    for(int i = 4; i < 11; i++, now = now->next)
-        CHECK(now->data == i-1);
+    Tree some_random_wrieble_that_must_has_some_strong_name;
+    //CHECK(((some_random_wrieble_that_must_has_some_strong_name)));
 }
 
-TEST_CASE("deleting element")
+TEST_CASE("getting all values")
 {
-    List a;//created List with which we will work in function
-    for(int i = 0; i < 10; i++)
-        a.push_back(i);
-    CHECK_NOTHROW(a.erase(5));
-
-    auto now = a.begin();
-    for(int i = 0; i < 5; i++, now = now->next)
-        CHECK(now->data == i);
-    for(int i = 6; i < 10; i++, now = now->next)
-        CHECK(now->data == i);
+    Tree tr;
+    tr.push(8, 8);
+    tr.push(4, 4);
+    tr.push(2, 2);
+    tr.push(1, 1);
+    tr.push(3, 3);
+    tr.push(6, 6);
+    tr.push(5, 5);
+    tr.push(7, 7);
+    tr.push(12, 12);
+    tr.push(10, 10);
+    tr.push(9, 9);
+    tr.push(11, 11);
+    tr.push(14, 14);
+    tr.push(13, 13);
+    tr.push(15, 15);
+    vector<int> temp;
+    REQUIRE_NOTHROW(tr.get_all_values(temp));
+    for(int i = 0; i < 15; i++)
+        CHECK(i+1 == temp[i]);
 }
 
-TEST_CASE("Merging empty and non-empty Lists")
+TEST_CASE("find min")
 {
-    List a;//created List with which we will work in function
-    List b;
-    for(int i = 0; i < 10; i++)
-        a.push_back(i);
-
-    REQUIRE_NOTHROW(merge(a, b));
-    List uni = merge(a, b);
-    CHECK(uni.begin() == a.begin());
-    CHECK(uni.end() == a.end());
-    CHECK(uni.size() == a.size());
-
-    REQUIRE_NOTHROW(merge(b, a));
-    uni = merge(b, a);
-    CHECK(uni.begin() == a.begin());
-    CHECK(uni.end() == a.end());
-    CHECK(uni.size() == a.size());
-    int i = 0;
-    for(auto x = a.begin(), y = uni.begin(); i < a.size(); i++, x = x->next, y = y->next)
-        CHECK(x->data == y->data);
+    Tree tr;
+    for(int i = 0; i < 15; i++)
+        tr.push(i, i+1);
+    REQUIRE_NOTHROW(tr.find_min());
+    CHECK(tr.find_min() == 1);
 }
 
-TEST_CASE("Merging empty Lists")
+TEST_CASE("find max")
 {
-    List a;//created List with which we will work in function
-    List b;//created 2 any List
-    List unity = merge(a, b);
-    CHECK(unity.size() == 0);
-    CHECK(unity.begin() == nullptr);
+    Tree tr;
+    for(int i = 0; i < 15; i++)
+        tr.push(i, i+1);
+    REQUIRE_NOTHROW(tr.find_max());
+    CHECK(tr.find_max() == 15);
 }
 
-TEST_CASE("Inserting an object: empty and nonempty lists") // Checking whether the properties are up-to-date after the insertion
+TEST_CASE("find all leaves")
 {
-    int f = 10;
-    int s = 20;
-    list1.push_back(f);
-	list2.push_back(f);
-
-	CHECK(list1.begin()->data == f);
-	CHECK(list2.begin()->data == f);
-	CHECK(list1.begin() == list1.end());
-	CHECK(list2.begin() == list2.end());
-
-	list1.push_back(s);
-	list2.push_back(s);
-
-	CHECK(list1.end()->data == s);
-	CHECK(list2.end()->data == s);
+    Tree tr;
+    tr.push(8, 9);
+    tr.push(4, 10);
+    tr.push(2, 11);
+    tr.push(1, 1);
+    tr.push(3, 2);
+    tr.push(6, 12);
+    tr.push(5, 3);
+    tr.push(7, 4);
+    tr.push(12, 13);
+    tr.push(10, 14);
+    tr.push(9, 5);
+    tr.push(11, 6);
+    tr.push(14, 15);
+    tr.push(13, 7);
+    tr.push(15, 8);
+    vector<int> temp;
+    REQUIRE_NOTHROW(tr.get_all_leave(temp));
+    for(int i = 0; i < 8; i++)
+        CHECK(temp[i] == i+1);
 }
 
-TEST_CASE("Updating list's size")
+TEST_CASE("all leaves from empty tree")
 {
-    int amount = 10;
-	for( int i = 0; i <= amount; i++)
-	{
-		list1.push_back(i);
-		list2.push_back(i);
-	}
-	int n = list1.size() + list2.size();
-
-	List list3 = merge(list1, list2);
-
-	CHECK(list3.size() == n);
+    Tree tr;
+    vector<int> temp;
+    REQUIRE_NOTHROW(tr.get_all_leave(temp));
+    CHECK(temp.size() == 0);
 }
-
-TEST_CASE("Random")
-{
-	times = 10;
-	int mer = 5;
-
-	for (int i = 0 ; i < times; i++)
-	{
-       REQUIRE_NOTHROW(list1.push_back(i));
-       REQUIRE_NOTHROW(list2.push_back(i));
-	}
-
-    for (int i = 0 ; i < del; i++)
-	{
-		REQUIRE_NOTHROW(list1 = merge(list2, list1));
-	}
-}
-
