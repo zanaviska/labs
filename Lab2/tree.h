@@ -22,6 +22,7 @@ public:
     int find_min(int now = 1);
     int find_max(int now = 1);
     void get_all_values(vector<int>&vec, int now = 1);
+    void get_all_leave(vector<int>&vec, int now = 1);
     int size(){
         return ln;
     }
