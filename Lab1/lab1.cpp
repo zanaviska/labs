@@ -23,19 +23,23 @@ int main()
     List b = List();
     for(int i = 0; i < n; i++)
     {
-        int s;
+        int s = i;
         cin >> s;
         a.push_back(s);
     }
     for(int i = 0; i < m; i++)
     {
-        int s;
+        int s = i+n;
         cin >> s;
         b.push_front(s);
     }
-    print(a);
-    print(b);
-    List l = merge(a, b);
+    //print(a);
+    //print(b);
+    a.merge(b);
     cout << "Merged:\n";
-    print(l);
+    print(a);
+    ListIter it = a.begin();
+    while(it != a.end())
+        cout << *it << ' ',
+        ++it;
 }
