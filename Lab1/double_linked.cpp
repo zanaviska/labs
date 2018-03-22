@@ -22,9 +22,11 @@ int List::push_back(int new_element_data)
 
 int List::insert(int pos, int new_element_data)
 {
-    ln++;
+    if(pos < 0 || pos > ln)
+        throw invalid_argument("Not possible to execute!!!!!");
     if(pos == 0) return push_front(new_element_data);
-    if(pos == ln-1) return push_back(new_element_data);
+    if(pos == ln) return push_back(new_element_data);
+    ln++;
     auto temp = make_shared<Node>(); // new element of list
     temp->data = new_element_data;
     shared_ptr<Node> now = first;
@@ -56,6 +58,8 @@ int List::push_front(int new_element_data)
 
 void List::erase(int position)
 {
+    if(position < 0 || position >= ln)
+        throw invalid_argument("Not possible to execute");
     if(position == 0)
     {
         first = first->next;
@@ -88,14 +92,13 @@ void print(List a)// a is name of output List
     }
 }
 
-List merge(List a, List b)// merge two List in one
+void List::merge(List list1)// merge two List in one
 {
-    if(a.first == nullptr) return b;
-    if(b.first == nullptr) return a;
-    List res = a;
-    res.last->next = b.first;
-    res.last->next->prev = res.last;
-    res.last = b.last;
-    res.ln += b.ln;
-    return res;
+    shared_ptr<Node> now = list1.first;
+    while(now != nullptr)
+    {
+        this->push_back(now->data);
+        now = now->next;
+    }
 }
+
