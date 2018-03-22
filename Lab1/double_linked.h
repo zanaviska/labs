@@ -22,19 +22,69 @@ public:
     int size(){
         return ln;
     }
-    shared_ptr<Node> begin(){
+    shared_ptr<Node> begin()
+    {
         return first;
     }
-    shared_ptr<Node> end(){
+    shared_ptr<Node> end()
+    {
+        return nullptr;
+    }
+    shared_ptr<Node> rbegin()
+    {
         return last;
     }
+    shared_ptr<Node> rend()
+    {
+        return nullptr;
+    }
     void erase(int);
-
-    friend List merge(List a, List b);
-
+    void merge(List list1);
     ~List() {}
+
+    friend void print(List a);
+    friend class ListIter;
 };
 
-void print(List);// a is name of output List
+class ListIter
+{
+    shared_ptr<List::Node> itr;
+public:
 
-List merge(List, List);// merge two List in one
+    ListIter(shared_ptr<List::Node> temp):
+        itr(temp)
+    {};
+
+    ListIter& operator= (const shared_ptr<List::Node> temp)
+    {
+        itr = temp;
+        return *this;
+    };
+
+    ListIter& operator++()
+    {
+        itr = itr->next;
+        return *this;
+    };
+
+    ListIter& operator--()
+    {
+        itr = itr->next;
+        return *this;
+    };
+
+    bool operator== (const ListIter& rhs)
+    {
+        return itr == rhs.itr;
+    };
+
+    bool operator!= (const ListIter& rhs)
+    {
+        return itr != rhs.itr;
+    };
+
+    int& operator*()
+    {
+        return itr->data;
+    };
+};
