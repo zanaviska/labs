@@ -23,12 +23,6 @@ TEST_CASE("pushing element")
         CHECK(i-1 == temp[i]);
 }
 
-TEST_CASE("Nothing wrong")
-{
-    Tree some_random_wrieble_that_must_has_some_strong_name;
-    //CHECK(((some_random_wrieble_that_must_has_some_strong_name)));
-}
-
 TEST_CASE("getting all values")
 {
     Tree tr;
@@ -71,7 +65,19 @@ TEST_CASE("find max")
     CHECK(tr.find_max() == 15);
 }
 
-TEST_CASE("find all leaves")
+TEST_CASE("min element in empty tree")
+{
+    Tree tr;
+    REQUIRE_NOTHROW(tr.find_min());
+}
+
+TEST_CASE("max element in empty tree")
+{
+    Tree tr;
+    REQUIRE_NOTHROW(tr.find_max());
+}
+
+TEST_CASE("find all leafs")
 {
     Tree tr;
     tr.push(8, 9);
@@ -90,7 +96,9 @@ TEST_CASE("find all leaves")
     tr.push(13, 7);
     tr.push(15, 8);
     vector<int> temp;
-    REQUIRE_NOTHROW(tr.get_all_leave(temp));
+    temp.clear();
+    REQUIRE_NOTHROW(tr.get_all_leaf(temp));
+    CHECK(temp.size() == 8);
     for(int i = 0; i < 8; i++)
         CHECK(temp[i] == i+1);
 }
