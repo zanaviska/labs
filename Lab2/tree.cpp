@@ -4,6 +4,7 @@ using namespace std;
 
 void Tree::push(int key, int value)
 {
+    length++;
     int now = 1;
     while(arr[now].is_used)
         now = (now<<1) + (arr[now].key < key);
@@ -38,14 +39,14 @@ void Tree::get_all_values(vector<int>&vec, int now)
     get_all_values(vec, (now<<1)+1);
 }
 
-void Tree::get_all_leave(vector<int>&vec, int now)
+void Tree::get_all_leaf(vector<int>&vec, int now)
 {
     if(arr[now].is_used == 0) return;
     if(arr[now<<1].is_used == 0 && arr[(now<<1)+1].is_used == 0)
     {
-        vac.push_back(arr[now].value);
+        vec.push_back(arr[now].value);
         return;
     }
-    get_all_leave(vec, now<<1);
-    get_all_leave(vec, (now<<1)+1);
+    get_all_leaf(vec, now<<1);
+    get_all_leaf(vec, (now<<1)+1);
 }
