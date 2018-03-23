@@ -5,100 +5,85 @@
 
 using namespace std;
 
-TEST_CASE("Creating an empty tree")
+TEST_CASE("creating empty tree")
 {
     Tree tr;
-	CHECK(tr.size() == 0);
+    CHECK(tr.size() == 0);
 }
 
 TEST_CASE("pushing element")
 {
     Tree tr;
-    REQUIRE_NOTHROW(tr.push(-1, -1));
-    for(int i = 0; i < 14; i++)
+    for(int i = 0; i < 15; i++)
         tr.push(i, i);
     vector<int> temp;
     tr.get_all_values(temp);
+    CHECK(temp.size() == 15);
     for(int i = 0; i < 15; i++)
-        CHECK(i-1 == temp[i]);
+        CHECK(i == temp[i]);
 }
 
-TEST_CASE("getting all values")
-{
-    Tree tr;
-    tr.push(8, 8);
-    tr.push(4, 4);
-    tr.push(2, 2);
-    tr.push(1, 1);
-    tr.push(3, 3);
-    tr.push(6, 6);
-    tr.push(5, 5);
-    tr.push(7, 7);
-    tr.push(12, 12);
-    tr.push(10, 10);
-    tr.push(9, 9);
-    tr.push(11, 11);
-    tr.push(14, 14);
-    tr.push(13, 13);
-    tr.push(15, 15);
-    vector<int> temp;
-    REQUIRE_NOTHROW(tr.get_all_values(temp));
-    for(int i = 0; i < 15; i++)
-        CHECK(i+1 == temp[i]);
-}
-
-TEST_CASE("find min")
+TEST_CASE("find min element")
 {
     Tree tr;
     for(int i = 0; i < 15; i++)
-        tr.push(i, i+1);
+        tr.push(i, 14-i);
     REQUIRE_NOTHROW(tr.find_min());
-    CHECK(tr.find_min() == 1);
+    CHECK(tr.find_min() == 0);
 }
 
-TEST_CASE("find max")
+TEST_CASE("find max element")
 {
     Tree tr;
     for(int i = 0; i < 15; i++)
-        tr.push(i, i+1);
+        tr.push(i, 14-i);
     REQUIRE_NOTHROW(tr.find_max());
-    CHECK(tr.find_max() == 15);
+    CHECK(tr.find_max() == 14);
 }
 
-TEST_CASE("min element in empty tree")
+TEST_CASE("find min element in empty tree")
 {
     Tree tr;
-    REQUIRE_NOTHROW(tr.find_min());
+    REQUIRE_THROWS(tr.find_min());
 }
 
-TEST_CASE("max element in empty tree")
+TEST_CASE("find max element in empty tree")
 {
     Tree tr;
-    REQUIRE_NOTHROW(tr.find_max());
+    REQUIRE_THROWS(tr.find_max());
 }
 
-TEST_CASE("find all leafs")
+TEST_CASE("get all values")
 {
     Tree tr;
-    tr.push(8, 9);
-    tr.push(4, 10);
-    tr.push(2, 11);
-    tr.push(1, 1);
-    tr.push(3, 2);
-    tr.push(6, 12);
-    tr.push(5, 3);
-    tr.push(7, 4);
-    tr.push(12, 13);
-    tr.push(10, 14);
-    tr.push(9, 5);
-    tr.push(11, 6);
-    tr.push(14, 15);
-    tr.push(13, 7);
-    tr.push(15, 8);
+    tr.push(4, 5);
+    tr.push(2, 3);
+    tr.push(1, 2);
+    tr.push(3, 4);
+    tr.push(6, 7);
+    tr.push(5, 6);
+    tr.push(7, 8);
     vector<int> temp;
     temp.clear();
-    REQUIRE_NOTHROW(tr.get_all_leaf(temp));
-    CHECK(temp.size() == 8);
-    for(int i = 0; i < 8; i++)
+    tr.get_all_values(temp);
+    CHECK(temp.size() == 37);
+    for(int i = 1; i < 8; i++)
+        CHECK(temp[i-1] == i);
+}
+
+TEST_CASE("get all leaf")
+{
+    Tree tr;
+    tr.push(4, 5);
+    tr.push(2, 3);
+    tr.push(1, 1);
+    tr.push(3, 2);
+    tr.push(6, 7);
+    tr.push(5, 3);
+    tr.push(7, 4);
+    vector<int> temp;
+    tr.get_all_leaf(temp, 1);
+    CHECK(temp.size() == 4);
+    for(int i = 0; i < 4; i++)
         CHECK(temp[i] == i+1);
 }

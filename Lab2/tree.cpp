@@ -11,10 +11,14 @@ void Tree::push(int key, int value)
     arr[now].key = key;
     arr[now].value = value;
     arr[now].is_used = 1;
+    arr[now<<1].is_used = 0;
+    arr[(now<<1)+1].is_used = 0;
 }
 
 int Tree::find_min(int now)
 {
+    if(length == 0)
+        throw length_error("impossible to execute!!");
     if(arr[now].is_used == 0) return 10000;
     int ans = arr[now].value;
     ans = min(ans, find_min(now<<1));
@@ -24,6 +28,8 @@ int Tree::find_min(int now)
 
 int Tree::find_max(int now)
 {
+    if(length == 0)
+        throw length_error("impossible to execute!!");
     if(arr[now].is_used == 0) return -10000;
     int ans = arr[now].value;
     ans = max(ans, find_max(now<<1));
