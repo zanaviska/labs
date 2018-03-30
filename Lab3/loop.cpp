@@ -1,16 +1,24 @@
-#include <bits/stdc++.h>
 #include "loop.h"
 
 using namespace std;
 
-void create_eiler_loop(vector< vector<int> > &adjacency_matrix, vector<int> &stepin, vector<int> unpair)
+void EilerLoop::create_eiler_loop()
 {
-    cout << "There isn't Eiler loop. To make Eiler loop you have to add next edges:\n";
+    vector<int> unpair = {0};
+    for(auto i:adjacency_matrix)
+    {
+        for(auto j:i)
+            unpair.back() += j;
+        if(unpair.back()&1)
+            unpair.push_back(0);
+        else
+            unpair.back() = 0;
+    }
+    unpair.pop_back();
+    if(unpair.size() < 3) return;
     for(int i = 2; i < (int)unpair.size(); i+=2)
     {
-        cout << unpair[i] << ' ' << unpair[i+1] << '\n';
-        stepin[unpair[i]]++;
-        stepin[unpair[i+1]]++;
+        //cout << unpair[i] << ' ' << unpair[i+1] << '\n';
         adjacency_matrix[unpair[i]][unpair[i+1]]++;
         adjacency_matrix[unpair[i+1]][unpair[i]]++;
     }
@@ -18,7 +26,6 @@ void create_eiler_loop(vector< vector<int> > &adjacency_matrix, vector<int> &ste
 
 vector<int> dfs(vector< vector<int> > &adjacency_matrix, int now, int finish, vector<int>& stepin)
 {
-    cerr << now << '\n';
     if(now == finish && stepin[now] == 0)
         return {now};
     for(int i = 0; i < adjacency_matrix.size(); i++)
@@ -35,57 +42,35 @@ vector<int> dfs(vector< vector<int> > &adjacency_matrix, int now, int finish, ve
     return {-2};
 }
 
-vector<int> get_eiler_loop(vector< vector<int> > adjacency_matrix, int graph_size)
+vector<int> EilerLoop::get_eiler_loop()
 {
-    vector<int> unpair;
+    vector< vector<int> > graph = adjacency_matrix;
+    int graph_size = adjacency_matrix.size();
     vector<int> stepin(graph_size);
-    for(int i = 0; i < graph_size; i++)
-    {
-        int cnt = 0;
-        for(int j = 0; j < graph_size; j++)
-            cnt += adjacency_matrix[i][j];
-        if(cnt&1)
-            unpair.push_back(i);
-        stepin[i] = cnt;
-    }
-    if(unpair.size() > 2)
-        create_eiler_loop(adjacency_matrix, stepin, unpair);
+    for(int i = 0; i < adjacency_matrix.size(); i++)
+        for(int j = 0; j < adjacency_matrix[i].size(); j++)
+            stepin[i] += adjacency_matrix[i][j];
     int start = 0;
     int finish = 0;
-    if(unpair.size() >= 2)
-    {
-        start = unpair[0];
-        finish = unpair[1];
-    }
+    for(int i = 0; i < graph_size; i++)
+        if(stepin[i]&1)
+            finish = start,
+            start = i;
     vector<int> res;
     res.reserve(graph_size*graph_size);
     auto insert_pos = res.begin();
     while(start != -1 && finish != -1)
     {
-        cerr << start << ' ' << finish << '\n';
-        vector<int> add_to_res = dfs(adjacency_matrix, start, finish, stepin);
+        vector<int> add_to_res = dfs(graph, start, finish, stepin);
         if(res.empty())
-        {
             res = add_to_res;
-            //insert_pos = res.begin();
-        }
         else
             res.insert(insert_pos, add_to_res.begin(), --add_to_res.end());
         start = -1;
         finish = -1;
-        for(auto i:res)
-            cerr << i << ' ';
-        cerr << '\n';
-        for(auto i:adjacency_matrix)
-        {
-            for(auto j:i)
-                cerr << j << ' ';
-            cerr << '\n';
-        }
 
         while(insert_pos != res.end())
         {
-            cerr << '!' << *insert_pos << '\n';
             if(stepin[*insert_pos] != 0)
             {
                 start = *insert_pos;
@@ -94,7 +79,6 @@ vector<int> get_eiler_loop(vector< vector<int> > adjacency_matrix, int graph_siz
             }
             insert_pos++;
         }
-        system("pause");
     }
     return res;
 }
