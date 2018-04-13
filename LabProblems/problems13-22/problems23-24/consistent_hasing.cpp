@@ -12,20 +12,28 @@ int ConsistentHash::gesh(string str)
 void ConsistentHash::add_server()
 {
     map<int, int> new_server;
-    triple x({md-1, md-1, new_server});
+    triple x({md, md, new_server});
     if(server.size() == 0)
+    {
         x.left = 0;
-    server.push_back(x);
-    int servers = (int)server.size();
-    int per = lenght/servers;
-    for(int i = servers-1; i > 0; i--)
-        while(server[i].arr.size() < per)
-        {
-            server[i].arr[server[i-1].arr.rbegin()->first] = server[i-1].arr.rbegin()->second;
-            server[i].left = server[i].arr.begin()->first;
-            server[i-1].right = server[i-1].arr.rbegin()->first;
-            server[i-1].arr.erase(server[i].arr.begin()->first);
-        }
+        server.push_back(x);
+        return;
+    }
+    auto pos = server.begin();
+    for(auto i = server.begin(); i != server.end(); i++)
+        if(i->arr.size() > pos->arr.size())
+            pos = i;
+    x.left = pos->right;
+    x.right = pos->right;
+    //cerr << "!\n";
+    for(auto it = pos->arr.rbegin(); 2*x.arr.size() < pos->arr.size(); it--)
+        //cerr << x.arr.size() << ' ' << pos->arr.size() << ' ' << it->first << ' ' << it->second << '\n',
+        x.arr[it->first] = it->second;
+    for(auto i:x.arr)
+        pos->arr.erase(--(pos->arr.end()));
+    x.left = x.arr.begin()->first;
+    pos->right = x.left;
+    server.insert(++pos, x);
 }
 
 void ConsistentHash::del_server()
@@ -48,7 +56,6 @@ void ConsistentHash::add_node(string key, int data)
     while(l < r)
     {
         mid = (l+r)/2;
-        cerr << '!';
         if(server[mid].left <= hash)
             l = mid+1;
         else
@@ -76,7 +83,7 @@ int ConsistentHash::get_node(string key)
     auto it = server[l].arr.lower_bound(hash);
     if(it->first == hash)
         return it->second;
-    return -1;
+    throw invalid_argument("there is no node with that hash");
 }
 
 void ConsistentHash::del_node(string key)
@@ -97,4 +104,6 @@ void ConsistentHash::del_node(string key)
     auto it = server[l].arr.lower_bound(hash);
     if(it->first == hash)
         server[l].arr.erase(hash);
+    else
+        throw invalid_argument("there is no node with that key");
 }
