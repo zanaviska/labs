@@ -11,6 +11,7 @@ class HashTable
         shared_ptr<Node> left;
         shared_ptr<Node> right;
         shared_ptr<Node> parent;
+        int high;
         Node(string key, int data, shared_ptr<Node> left, shared_ptr<Node> right, shared_ptr<Node> parent)
         {
             this->key = key;
@@ -18,12 +19,18 @@ class HashTable
             this->left = left;
             this->right = right;
             this->parent = parent;
+            this->high = 0;
         }
     };
     vector<int> st;
     int md = 9e4+7;
     shared_ptr<Node> arr[100000];
     int gesh(string s);
+    void turn_left(shared_ptr<Node>);
+    void turn_right(shared_ptr<Node>);
+    void make_parent(shared_ptr<Node>, shared_ptr<Node>);
+    int max_high(shared_ptr<Node> now);
+    void up(shared_ptr<Node>);
 public:
     HashTable()
     {
