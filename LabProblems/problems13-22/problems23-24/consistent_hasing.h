@@ -17,8 +17,7 @@ class ConsistentHash
 public:
     ConsistentHash():
         lenght(0),
-        server({})
-        //server.push_back(new int[2000])
+        server({{0, md, {}}})
     {};
     void add_server();
     void del_server();
