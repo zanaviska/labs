@@ -4,62 +4,96 @@ using namespace std;
 
 void Tree::push(int key)
 {
-    int now = 1;
-    while(arr[now].is_used)
-        now = (now<<1) + (arr[now].key < key);
-    arr[now].key = key;
-    arr[now].is_used = 1;
-}
-
-void Tree::get_all_keys(vector<int>&vec, int now)
-{
-    if(arr[now].is_used == 0) return;
-    get_all_keys(vec, now<<1);
-    vec.push_back(arr[now].key);
-    get_all_keys(vec, (now<<1)+1);
-}
-
-void Tree::up(int pos, int old)
-{
-    queue<pair<int, int>> q;
-    q.push({pos, old});
-    while(!q.empty())
+    length++;
+    if(root == nullptr)
     {
-        pos = q.front().first;
-        old = q.front().second;
-        q.pop();
-        arr[pos] = arr[old];
-        if(!arr[old].is_used)
-            continue;
-        q.push({pos<<1, old<<1});
-        q.push({(pos<<1)+1, (old<<1)+1});
+        root = make_shared<Vertex>(Vertex(key));
+        return;
     }
+    auto now = root;
+    while(true)
+        if(key < now->key)
+        {
+            if(now->left == nullptr)
+            {
+                now->left = make_shared<Vertex>(Vertex(key));
+                return;
+            }
+            now = now->left;
+        } else
+        {
+            if(now->right == nullptr)
+            {
+                now->right = make_shared<Vertex>(Vertex(key));
+                return;
+            }
+            now = now->right;
+        }
+}
+
+void Tree::get_all_keys(vector<int>&vec, shared_ptr<Vertex> now)
+{
+    if(now == nullptr) return;
+    get_all_keys(vec, now->left);
+    //cerr << now->key << '\n';
+    vec.push_back(now->key);
+    get_all_keys(vec, now->right);
 }
 
 int Tree::erase(int key)
 {
-    int now = 1;
-    while(arr[now].is_used && arr[now].key != key)
-    {
-        //if(key == 15) cout << arr[now].key << ' ';
-        now = (now<<1)+(arr[now].key < key);
-    }
-    if(!arr[now].is_used)
+    auto now = root;
+    shared_ptr<Vertex> last = nullptr;
+    bool r = 0;
+    while(now != nullptr && now->key != key)
+        if(key < now->key)
+        {
+            last = now;
+            now = now->left;
+            r = 0;
+        }
+        else
+        {
+            last = now;
+            now = now->right;
+            r = 1;
+        }
+    //cerr << '#' << now->key << '\n';
+    //cerr << '#' << last->key << '\n';
+    if(now == nullptr)
         return -1000;
-    if(!arr[now<<1].is_used)
+    auto prev = now;
+    auto next = now->right;
+    if(now->left == nullptr)
     {
-        up(now, (now<<1)+1);
+        if(now == root)
+            root = now->right;
+        else if(r)
+            last->right = now->right;
+        else
+            last->left = now->right;
         return key;
     }
-    if(!arr[(now<<1)+1].is_used)
+    if(now->right == nullptr)
     {
-        up(now, now<<1);
+        if(now == root)
+            root = now->left;
+        else if(r)
+            last->right = now->left;
+        else
+            last->left = now->left;
         return key;
     }
-    int ver = (now<<1)+1;
-    while(arr[ver<<1].is_used)
-        ver <<= 1;
-    arr[now] = arr[ver];
-    up(ver, (ver<<1)+1);
+    while(next->left != nullptr)
+    {
+        prev = next;
+        next = next->left;
+    }
+    if(prev == now)
+        now->right = next->right;
+    else
+        prev->left = next->right;
+    now->key = next->key;
     return key;
 }
+
