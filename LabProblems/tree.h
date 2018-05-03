@@ -7,26 +7,33 @@ class Tree
     struct Vertex
     {
         int key;
-        bool is_used;
+        shared_ptr<Vertex> left;
+        shared_ptr<Vertex> right;
+        Vertex(int key)
+        {
+            this->key = key;
+            this->left = nullptr;
+            this->right = nullptr;
+        }
     };
-    Vertex* arr;
-    int ln;//size of tree;
+    int length;
+    shared_ptr<Vertex> root;
 public:
     Tree():
-        ln(0),
-        arr(new Vertex[1<<20])
+        length(0),
+        root(nullptr)
     {};
-
+    shared_ptr<Vertex> begin()
+    {
+        return root;
+    }
     void push(int);
-    void get_all_keys(vector<int>&vec, int now = 1);
+    void get_all_keys(vector<int>&vec, shared_ptr<Vertex> now);
     int erase(int key);
-    void up(int, int);
     int size(){
-        return ln;
+        return length;
     }
-    ~Tree(){
-        delete []arr;
-    }
+    ~Tree(){}
 
 };
 
