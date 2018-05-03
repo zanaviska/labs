@@ -2,34 +2,38 @@
 
 using namespace std;
 
-vector<int> Problems_1_12::delete_pair()
+vector<int> Problems_1_12::delete_kratni(int n)
 {
-    vector<int> key;
-    tree.get_all_keys(key);
+    vector<int> key = {};
+    tree.get_all_keys(key, tree.begin());
     vector<int> ans;
-    for(int i = 0; i < key.size(); i++)
-        if(abs(key[i])%2 == 0)
-            ans.push_back(tree.erase(key[i]));
+    for(auto i:key)
+        if(abs(i)%n == 0)
+            ans.push_back(tree.erase(i));
     return ans;
 }
 
 vector<int> Problems_1_12::delete_unpair()
 {
     vector<int> key;
-    tree.get_all_keys(key);
+    tree.get_all_keys(key, tree.begin());
     vector<int> ans;
-    for(int i = 0; i < key.size(); i++)
-        if(abs(key[i])%2 == 1)
-            ans.push_back(tree.erase(key[i]));
+    for(auto i:key)
+        if(abs(i)%2 == 1)
+        {
+            //cerr << '!';
+            ans.push_back(tree.erase(i));
+            //if(ans.back() == -1000) cerr << i << '\n';
+        }
     return ans;
 }
 
 vector<int> Problems_1_12::delete_higer(int comp)
 {
     vector<int> key;
-    tree.get_all_keys(key);
+    tree.get_all_keys(key, tree.begin());
     vector<int> ans;
-    for(int i = key.size()-1; i >= 0 && key[i] > comp; i--)
+    for(int i = (int)key.size()-1; i >= 0 && key[i] > comp; i--)
         ans.push_back(tree.erase(key[i]));
     return ans;
 }
@@ -37,10 +41,11 @@ vector<int> Problems_1_12::delete_higer(int comp)
 vector<int> Problems_1_12::delete_lower(int comp)
 {
     vector<int> key;
-    tree.get_all_keys(key);
+    tree.get_all_keys(key, tree.begin());
     vector<int> ans;
-    for(int i = 0; i < key.size() && key[i] < comp; i++)
-        ans.push_back(tree.erase(key[i]));
+    for(auto i:key)
+        if(i < comp)
+            ans.push_back(tree.erase(i));
     return ans;
 }
 
@@ -59,7 +64,7 @@ vector<int> Problems_1_12::delete_choosen(vector<int>choose)
 vector<int> Problems_1_12::delete_prime()
 {
     vector<int> key;
-    tree.get_all_keys(key);
+    tree.get_all_keys(key, tree.begin());
     vector<int> ans;
     for(int i = 0; i < 15; i++)
     {
@@ -80,7 +85,7 @@ vector<int> Problems_1_12::delete_prime()
 vector<int> Problems_1_12::delete_folded()
 {
     vector<int> key;
-    tree.get_all_keys(key);
+    tree.get_all_keys(key, tree.begin());
     vector<int> ans;
     for(int i = 0; i < 15; i++)
     {
@@ -101,7 +106,7 @@ vector<int> Problems_1_12::delete_folded()
 vector<int> Problems_1_12::delete_interval(int from, int to)
 {
     vector<int> key;
-    tree.get_all_keys(key);
+    tree.get_all_keys(key, tree.begin());
     vector<int> ans;
     for(int i = 0; i < 15; i++)
         if(from <= key[i] && key[i] <= to)
@@ -112,7 +117,7 @@ vector<int> Problems_1_12::delete_interval(int from, int to)
 vector<int> Problems_1_12::delete_sum_of_digit_more(int comp)
 {
     vector<int> key;
-    tree.get_all_keys(key);
+    tree.get_all_keys(key, tree.begin());
     vector<int> ans;
     for(int i = 0; i < 15; i++)
     {
@@ -133,7 +138,7 @@ vector<int> Problems_1_12::delete_sum_of_digit_more(int comp)
 vector<int> Problems_1_12::delete_sum_of_digit_less(int comp)
 {
     vector<int> key;
-    tree.get_all_keys(key);
+    tree.get_all_keys(key, tree.begin());
     vector<int> ans;
     for(int i = 0; i < 15; i++)
     {
@@ -153,7 +158,7 @@ vector<int> Problems_1_12::delete_sum_of_digit_less(int comp)
 vector<int> Problems_1_12::delete_sum_of_digit_interval(int from, int to)
 {
     vector<int> key;
-    tree.get_all_keys(key);
+    tree.get_all_keys(key, tree.begin());
     vector<int> ans;
     for(int i = 0; i < 15; i++)
     {
@@ -173,7 +178,7 @@ vector<int> Problems_1_12::delete_sum_of_digit_interval(int from, int to)
 vector<int> Problems_1_12::delete_square()
 {
     vector<int> key;
-    tree.get_all_keys(key);
+    tree.get_all_keys(key, tree.begin());
     vector<int> ans;
     for(int i = 0; i < 15; i++)
     {
