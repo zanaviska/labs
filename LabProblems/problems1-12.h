@@ -20,10 +20,10 @@ public:
     vector<int> get_all_keys()
     {
         vector<int> res;
-        tree.get_all_keys(res);
+        tree.get_all_keys(res, tree.begin());
         return res;
     }
-    vector<int> delete_pair();
+    vector<int> delete_kratni(int n);
     vector<int> delete_unpair();
     vector<int> delete_higer(int comp);
     vector<int> delete_lower(int comp);
